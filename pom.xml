@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.example</groupId>
-    <artifactId>Mock</artifactId>
+    <artifactId>Zaglushka</artifactId>
     <version>1.0</version>
     <packaging>jar</packaging>
 
@@ -27,12 +27,12 @@
         <dependency>
             <groupId>org.tinylog</groupId>
             <artifactId>tinylog-api</artifactId>
-            <version>2.4.1</version>
+            <version>2.6.1</version>
         </dependency>
         <dependency>
             <groupId>org.tinylog</groupId>
             <artifactId>tinylog-impl</artifactId>
-            <version>2.4.1</version>
+            <version>2.6.1</version>
         </dependency>
     </dependencies>
 
@@ -41,6 +41,7 @@
            <plugin>
                <groupId>org.springframework.boot</groupId>
                <artifactId>spring-boot-maven-plugin</artifactId>
+               <version>2.4.1</version>
 
            </plugin>
            <plugin>
