@@ -1,16 +1,13 @@
 package org.lanit.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.commons.lang.RandomStringUtils;
-import org.lanit.addJson.*;
-import org.lanit.deleteJson.Delete;
+import org.lanit.models.*;
+import org.lanit.models.Delete;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.tinylog.Logger;
 
 import java.io.BufferedReader;
 import java.io.FileReader;

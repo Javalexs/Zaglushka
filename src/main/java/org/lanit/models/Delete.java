@@ -1,4 +1,4 @@
-package org.lanit.deleteJson;
+package org.lanit.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

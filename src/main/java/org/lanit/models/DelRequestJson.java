@@ -1,6 +1,7 @@
-package org.lanit.deleteJson;
+package org.lanit.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.lanit.deleteJson.Info;
 
 public class DelRequestJson{
 
@@ -14,7 +15,7 @@ public class DelRequestJson{
 	private String uuid;
 
 	@JsonProperty("info")
-	private Info info;
+	private org.lanit.deleteJson.Info info;
 
 	public void setLastUpdate(String lastUpdate){
 		this.lastUpdate = lastUpdate;
@@ -40,7 +41,7 @@ public class DelRequestJson{
 		return uuid;
 	}
 
-	public void setInfo(Info info){
+	public void setInfo(org.lanit.deleteJson.Info info){
 		this.info = info;
 	}
 

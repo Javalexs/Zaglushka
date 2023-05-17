@@ -1,4 +1,4 @@
-package org.lanit.addJson;
+package org.lanit.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
