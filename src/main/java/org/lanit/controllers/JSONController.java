@@ -21,7 +21,7 @@ import java.util.UUID;
 @Controller
 public class JSONController {
     @GetMapping(value = "json")
-    public Object response (@RequestBody String requestBody, @RequestParam(value = "id")String userId) throws IOException {
+    public Object response (@RequestBody String requestBody) throws IOException {
 
         String str1 = "\\src\\main\\resources\\files\\templates\\json\\AddResponse.json";
         BufferedReader buf1 = new BufferedReader(new FileReader(str1));
