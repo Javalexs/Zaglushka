@@ -10,10 +10,6 @@ public class Info{
 
 	@JsonProperty("tickers")
 	private List<TickersItem> tickers;
-	public Info(String userID, List<TickersItem> tickers){
-		this.userID = userID;
-		this.tickers = tickers;
-	}
 
 	public void setUserID(String userID){
 		this.userID = userID;

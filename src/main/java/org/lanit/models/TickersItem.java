@@ -10,11 +10,6 @@ public class TickersItem{
 
 	@JsonProperty("ticker")
 	private String ticker;
-	public TickersItem(String ticker, List<AlertsItem> alerts){
-		this.ticker = ticker;
-		this.alerts = alerts;
-
-	}
 
 	public void setAlerts(List<AlertsItem> alerts){
 		this.alerts = alerts;

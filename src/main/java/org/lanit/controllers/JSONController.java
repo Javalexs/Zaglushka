@@ -1,43 +1,26 @@
 package org.lanit.controllers;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.lanit.models.*;
-import org.lanit.models.Delete;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @Controller
 public class JSONController {
-    @GetMapping(value = "json")
-    public Object response (@RequestBody String requestBody) throws IOException {
-
-        String str1 = "\\src\\main\\resources\\files\\templates\\json\\AddResponse.json";
-        BufferedReader buf1 = new BufferedReader(new FileReader(str1));
-        String value1;
-        String tempAddResponse = "";
-        while ((value1 = buf1.readLine()) != null) {
-            tempAddResponse += value1;
-        }
-
-        String str2 = "\\src\\main\\resources\\files\\templates\\json\\DeleteResponse.json";
-        BufferedReader buf2 = new BufferedReader(new FileReader(str2));
-        String value2;
-        String tempDelResponse = "";
-        while ((value2 = buf2.readLine()) != null) {
-            tempDelResponse += value2;
-        }
+    @PostMapping(value = "json")
+    public Object response (@RequestBody String requestbody, @RequestParam String action) throws Exception {
 
         UUID uuid = UUID.randomUUID();
 
@@ -45,55 +28,81 @@ public class JSONController {
         DateTimeFormatter dtFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
         String lastUpdate = dtFormatter.format(dt);
 
-        List<AlertsItem> alerts = new ArrayList<>();
-        List<TickersItem> tickers = new ArrayList<>();
+        ObjectMapper objectMapper = new ObjectMapper();
+        RequestJson requestJson = objectMapper.readValue(requestbody, RequestJson.class);
 
+        Info info = requestJson.getInfo();
+        String userId = info.getUserID();
+        List<TickersItem> tickerItem = info.getTickers();
+
+        ResponseJson responseJson = new ResponseJson();
         switch (action) {
             case "add":
-                Add add = new Add();
-                AlertsItem alertsItem = new AlertsItem(add.getTimeFrame(), add.getPercent());
-                alerts.add(alertsItem);
-                TickersItem tickersItem = new TickersItem(add.getName(), alerts);
-                tickers.add(tickersItem);
-                Info info = new Info(userId, tickers);
+                Add add = requestJson.getAdd();
+                String addTicker = add.getName();
+                int timeframe = add.getTimeFrame();
+                int percent = add.getPercent();
 
-                break;
+                AlertsItem alertsItem = new AlertsItem();
+                alertsItem.setTimeframe(timeframe);
+                alertsItem.setPercent(percent);
 
-            case "delete":
-                Delete delete = new Delete();
-                for (TickersItem a : tickers) {
-                    if (a.getTicker().equals(delete.getTickerName())) {
-                        a.getAlerts().remove(delete.getAlertIndex());
+                int addValue = 0;
+                for (TickersItem ticker : tickerItem) {
+                    if (ticker.getTicker().equals(addTicker)) {
+                        addValue = tickerItem.indexOf(ticker);
                     }
                 }
-                break;
+                if (!tickerItem.get(addValue).getAlerts().contains(alertsItem)) {
+                    tickerItem.get(addValue).getAlerts().add(alertsItem);
+                    info.setUserID(userId);
+                    info.setTickers(tickerItem);
 
+                    responseJson.setInfo(info);
+                    responseJson.setUuid(uuid.toString());
+                    responseJson.setLastUpdate(lastUpdate);
+
+                } else {
+                    TickersItem tickerItem2 = new TickersItem();
+                    tickerItem2.setTicker(addTicker);
+                    tickerItem2.getAlerts().add(alertsItem);
+                    info.getTickers().add(tickerItem2);
+
+                    responseJson.setInfo(info);
+                    responseJson.setUuid(uuid.toString());
+                    responseJson.setLastUpdate(lastUpdate);
+                }
+                String responseBody = null;
+                responseBody = objectMapper.writeValueAsString(responseJson);
+                return ResponseEntity.ok().header("content-type", "application/json").body(responseBody);
+
+            case "delete":
+                Delete delete = requestJson.getDelete();
+                String delTicker = delete.getTickerName();
+                int alertIndex = delete.getAlertIndex();
+
+                int delValue = 0;
+                for (TickersItem ticker : tickerItem) {
+                    if (ticker.getTicker().equals(delTicker)) {
+                        delValue = tickerItem.indexOf(ticker);
+                    }
+                }
+                tickerItem.get(delValue).getAlerts().remove(alertIndex);
+
+                info.setUserID(userId);
+                info.setTickers(tickerItem);
+
+                responseJson.setInfo(info);
+                responseJson.setUuid(uuid.toString());
+                responseJson.setLastUpdate(lastUpdate);
+
+                responseBody = objectMapper.writeValueAsString(responseJson);
+
+                return ResponseEntity.ok().header("content-type", "application/json").body(responseBody);
             default:
-                System.out.println("Передан некорректный action " + action);
-                break;
+                String errorMessage = "Передан некорректный action - " + action + "";
+                return ResponseEntity.badRequest().header("content-type", "application/json").body(errorMessage);
         }
-
-        ObjectMapper objectMapper = new ObjectMapper();
-        AddRequestJson addRequestJson = objectMapper.readValue(requestBody, AddRequestJson.class);
-        String responseBody = String.format(tempAddResponse, addRequestJson.getAdd(), lastUpdate, uuid, addRequestJson.getInfo());
-        return ResponseEntity.ok().header("content-type", "application/json").body(responseBody);
     }
-
-
-
-//            ObjectMapper objectMapper = new ObjectMapper();
-//            RequestJson requestJson = objectMapper.readValue(requestBody, RequestJson.class);
-//            //6.
-//            String id = requestJson.getId();
-//            int balance = Integer.parseInt(requestJson.getDebitBalance() + requestJson.getCreditBalance());
-//            String registeredDT = requestJson.getRegistered();
-//            int numberOfFriends = requestJson.getFriends().size();
-//            //7.
-//            String responseBody = String.format(templateResponse, id, uuid, balance, numberOfFriends, registeredDT, lastActiveDT);
-//            //8.
-//            Logger.info(String.format("Заглушка отработала за %s мс. ID клиента - %s. UUID ответа - %s.", System.currentTimeMillis() + startTime, id, uuid));
-//            //9.
-//            return ResponseEntity.ok().header("content-type", "application/json").body(responseBody);
-
 
 }

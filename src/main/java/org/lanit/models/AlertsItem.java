@@ -9,10 +9,6 @@ public class AlertsItem{
 
 	@JsonProperty("percent")
 	private int percent;
-	public AlertsItem(int timeframe, int percent){
-		this.timeframe = timeframe;
-		this.percent = percent;
-	}
 
 	public void setTimeframe(int timeframe){
 		this.timeframe = timeframe;

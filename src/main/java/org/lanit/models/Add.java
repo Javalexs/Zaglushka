@@ -12,11 +12,7 @@ public class Add{
 
 	@JsonProperty("timeFrame")
 	private int timeFrame;
-//	public Add(String name, int percent, int timeFrame){
-//		this.name = name;
-//		this.percent = percent;
-//		this.timeFrame = timeFrame;
-//	}
+
 
 	public void setName(String name){
 		this.name = name;

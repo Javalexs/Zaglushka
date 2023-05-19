@@ -1,21 +1,41 @@
 package org.lanit.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.lanit.deleteJson.Info;
 
-public class DelRequestJson{
+public class RequestJson {
 
-	@JsonProperty("lastUpdate")
-	private String lastUpdate;
+	@JsonProperty("add")
+	private Add add;
 
 	@JsonProperty("delete")
 	private Delete delete;
+
+	@JsonProperty("lastUpdate")
+	private String lastUpdate;
 
 	@JsonProperty("uuid")
 	private String uuid;
 
 	@JsonProperty("info")
-	private org.lanit.deleteJson.Info info;
+	private Info info;
+
+
+	public void setAdd(Add add){
+
+		this.add = add;
+	}
+
+	public Add getAdd(){
+		return add;
+	}
+	public void setDelete(Delete delete){
+		this.delete = delete;
+	}
+
+	public Delete getDelete(){
+		return delete;
+	}
+
 
 	public void setLastUpdate(String lastUpdate){
 		this.lastUpdate = lastUpdate;
@@ -23,14 +43,6 @@ public class DelRequestJson{
 
 	public String getLastUpdate(){
 		return lastUpdate;
-	}
-
-	public void setDelete(Delete delete){
-		this.delete = delete;
-	}
-
-	public Delete getDelete(){
-		return delete;
 	}
 
 	public void setUuid(String uuid){
@@ -41,7 +53,7 @@ public class DelRequestJson{
 		return uuid;
 	}
 
-	public void setInfo(org.lanit.deleteJson.Info info){
+	public void setInfo(Info info){
 		this.info = info;
 	}
 
