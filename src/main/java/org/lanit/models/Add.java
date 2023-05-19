@@ -13,7 +13,6 @@ public class Add{
 	@JsonProperty("timeFrame")
 	private int timeFrame;
 
-
 	public void setName(String name){
 		this.name = name;
 	}

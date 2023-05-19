@@ -9,13 +9,11 @@ public class Delete{
 
 	@JsonProperty("alertIndex")
 	private int alertIndex;
-
-	public void setTickerName(String tickerName){
-		this.tickerName = tickerName;
-	}
-
 	public String getTickerName(){
 		return tickerName;
+	}
+	public void setTickerName(String tickerName){
+		this.tickerName = tickerName;
 	}
 
 	public void setAlertIndex(int alertIndex){

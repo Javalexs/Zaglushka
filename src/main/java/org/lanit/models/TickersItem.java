@@ -4,12 +4,11 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class TickersItem{
+	@JsonProperty("ticker")
+	private String ticker;
 
 	@JsonProperty("alerts")
 	private List<AlertsItem> alerts;
-
-	@JsonProperty("ticker")
-	private String ticker;
 
 	public void setAlerts(List<AlertsItem> alerts){
 		this.alerts = alerts;

@@ -5,12 +5,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class ResponseJson{
 	@JsonProperty("info")
 	private Info info;
+
 	@JsonProperty("lastUpdate")
 	private String lastUpdate;
 
 	@JsonProperty("uuid")
 	private String uuid;
-	
+
+
 
 	public void setLastUpdate(String lastUpdate){
 		this.lastUpdate = lastUpdate;
