@@ -114,7 +114,7 @@ public class JSONController {
 
                 }
                     default:
-                        String errorMessage = "Передан некорректный action - " + action + "";
+                        String errorMessage = "Передан некоректный action - " + action + "";
                         return ResponseEntity.badRequest().header("content-type", "application/json").body(errorMessage);
         }
     }
