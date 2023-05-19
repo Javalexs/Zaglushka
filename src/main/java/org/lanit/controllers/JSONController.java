@@ -87,7 +87,7 @@ public class JSONController {
                 }
 
             case "delete":
-//                try {
+                try {
                     ObjectMapper objectMapper = new ObjectMapper();
                     RequestJson requestJson = objectMapper.readValue(requestbody, RequestJson.class);
 
@@ -122,11 +122,11 @@ public class JSONController {
                     String responseBody = objectMapper.writeValueAsString(responseJson);
 
                     return ResponseEntity.ok().header("content-type", "application/json").body(responseBody);
-//                }catch (Exception e) {
-//                    return ResponseEntity.badRequest().header("content-type", "application/json").
-//                            body(String.format("{\"message\": \"Передана невалидная json\", \"request\": \"%s\"}", responseJson));
-//
-//                }
+                }catch (Exception e) {
+                    return ResponseEntity.badRequest().header("content-type", "application/json").
+                            body(String.format("{\"message\": \"Передана невалидная json\", \"request\": \"%s\"}", responseJson));
+
+                }
                     default:
                         String errorMessage = "Передан некорректный action - " + action + "";
                         return ResponseEntity.badRequest().header("content-type", "application/json").body(errorMessage);
