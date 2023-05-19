@@ -22,23 +22,17 @@ public class JSONController {
         DateTimeFormatter dtFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
         String lastUpdate = dtFormatter.format(dt);
 
-//        ObjectMapper objectMapper = new ObjectMapper();
-//        RequestJson requestJson = objectMapper.readValue(requestbody, RequestJson.class);
-//
-//        Info info = requestJson.getInfo();
-//        String userId = info.getUserID();
-//        List<TickersItem> tickerItem = info.getTickers();
+        ObjectMapper objectMapper = new ObjectMapper();
+        RequestJson requestJson = objectMapper.readValue(requestbody, RequestJson.class);
+
+        Info info = requestJson.getInfo();
+        String userId = info.getUserID();
+        List<TickersItem> tickerItem = info.getTickers();
 
         ResponseJson responseJson = new ResponseJson();
         switch (action) {
             case "add":
                 try {
-                    ObjectMapper objectMapper = new ObjectMapper();
-                    RequestJson requestJson = objectMapper.readValue(requestbody, RequestJson.class);
-
-                    Info info = requestJson.getInfo();
-                    String userId = info.getUserID();
-                    List<TickersItem> tickerItem = info.getTickers();
                     Add add = requestJson.getAdd();
                     String addTicker = add.getName();
                     int timeframe = add.getTimeFrame();
@@ -47,7 +41,7 @@ public class JSONController {
                     AlertsItem alertsItem = new AlertsItem();
                     alertsItem.setTimeframe(timeframe);
                     alertsItem.setPercent(percent);
-    //
+
                     int addValue = 0;
                     for (TickersItem ticker : tickerItem) {
                         if (ticker.getTicker().equals(addTicker)) {
@@ -88,14 +82,6 @@ public class JSONController {
 
             case "delete":
                 try {
-                    ObjectMapper objectMapper = new ObjectMapper();
-                    RequestJson requestJson = objectMapper.readValue(requestbody, RequestJson.class);
-
-                    Info info = requestJson.getInfo();
-                    String userId = info.getUserID();
-                    List<TickersItem> tickerItem = info.getTickers();
-
-
                     Delete delete = requestJson.getDelete();
                     String delTicker = null;
                     int alertIndex = 0;
@@ -130,8 +116,6 @@ public class JSONController {
                     default:
                         String errorMessage = "Передан некорректный action - " + action + "";
                         return ResponseEntity.badRequest().header("content-type", "application/json").body(errorMessage);
-
         }
     }
-
 }
