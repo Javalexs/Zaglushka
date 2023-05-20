@@ -71,11 +71,6 @@ public class JSONController {
                     responseBody = objectMapper.writeValueAsString(responseJson);
                     return ResponseEntity.ok().header("content-type", "application/json").body(responseBody);
                 } catch (Exception e) {
-
-                    // #9 Logging error message and request body if json parsing failed
-
-
-                    //  #10 Returning response with status 200 and request body
                     return ResponseEntity.badRequest().header("content-type", "application/json").
                             body(String.format("{\"message\": \"Передана невалидная json\", \"request\": \"%s\"}", responseJson));
                 }
@@ -94,7 +89,18 @@ public class JSONController {
                     for (TickersItem ticker : tickerItem) {
                         if (ticker.getTicker().equals(delTicker)) {
                             delValue = tickerItem.indexOf(ticker);
+//                        }
+                        }else{
+                            if(ticker.getTicker() != null) {
+                                String errorMessage = "{\"message\": \"Передан некорректный тикер\"}";
+                                return ResponseEntity.badRequest().header("content-type", "application/json").body(errorMessage);
+                            }
                         }
+                    }
+
+                    if(alertIndex >= tickerItem.get(delValue).getAlerts().size()){
+                        String errorMessage = "{\"message\": \"Передан некорректный индекс\"}";
+                        return ResponseEntity.badRequest().header("content-type", "application/json").body(errorMessage);
                     }
                     tickerItem.get(delValue).getAlerts().remove(alertIndex);
 
