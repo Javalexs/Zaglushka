@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -14,7 +15,7 @@ import java.util.UUID;
 @Controller
 public class JSONController {
     @PostMapping(value = "json")
-    public Object response (@RequestBody String requestbody, @RequestParam String action) throws Exception {
+    public Object response (@RequestBody String requestbody, @RequestParam String action) throws IOException {
 
         UUID uuid = UUID.randomUUID();
 
@@ -86,18 +87,17 @@ public class JSONController {
                     }
 
                     int delValue = 0;
+                    int count = 0;
                     for (TickersItem ticker : tickerItem) {
                         if (ticker.getTicker().equals(delTicker)) {
+                            count = 1;
                             delValue = tickerItem.indexOf(ticker);
-//                        }
-                        }else{
-                            if(ticker.getTicker() != null) {
-                                String errorMessage = "{\"message\": \"Передан некорректный тикер\"}";
-                                return ResponseEntity.badRequest().header("content-type", "application/json").body(errorMessage);
-                            }
                         }
                     }
-
+                    if(count == 0){
+                        String errorMessage = "{\"message\": \"Передан некорректный тикер\"}";
+                        return ResponseEntity.badRequest().header("content-type", "application/json").body(errorMessage);
+                    }
                     if(alertIndex >= tickerItem.get(delValue).getAlerts().size()){
                         String errorMessage = "{\"message\": \"Передан некорректный индекс\"}";
                         return ResponseEntity.badRequest().header("content-type", "application/json").body(errorMessage);

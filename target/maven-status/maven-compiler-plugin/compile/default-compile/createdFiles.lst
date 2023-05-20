@@ -1,9 +1,9 @@
 org\lanit\models\ResponseJson.class
 org\lanit\models\AlertsItem.class
 org\lanit\models\Info.class
+org\lanit\Application.class
 org\lanit\models\TickersItem.class
 org\lanit\models\Delete.class
 org\lanit\models\RequestJson.class
 org\lanit\controllers\JSONController.class
 org\lanit\models\Add.class
-org\lanit\MyApplication.class
